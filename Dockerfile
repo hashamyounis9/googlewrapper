@@ -2,8 +2,8 @@ FROM python:3.11-slim
 
 # Install necessary dependencies
 RUN apt-get update && apt-get install -y \
-    chromium \
-    chromium-driver \
+    chromium-browser \
+    chromium-chromedriver \
     --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
