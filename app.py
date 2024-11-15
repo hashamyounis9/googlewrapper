@@ -1,18 +1,20 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import nodriver as uc
 from bs4 import BeautifulSoup
-import asyncio
 
 
 app = Flask(__name__)
 
 
 async def scrape(q):
-    browser = await uc.start(headless=True)
-    page = await browser.get(f"https://google.com/search?q={q}")
-    await page.scroll_down(75)
-    await page.sleep(2)
-    await page.wait_for(selector='#botstuff > div > div:nth-child(3)', timeout=3)
+    browser = await uc.start(headless=False)
+    try:
+        page = await browser.get(f"https://google.com/search?q={q}")
+        await page.scroll_down(75)
+        await page.sleep(2)
+        await page.wait_for(selector='#botstuff > div > div:nth-child(3)', timeout=3)
+    except Exception as e:
+        return jsonify({"error" : e}), 5000
 
     titles = []
     try:
@@ -22,6 +24,9 @@ async def scrape(q):
                 "hint": "Maybe your query is invalid/unclear"}
 
     elements = await page.select_all('.MjjYud')
+    # print("Elements: ", elements)
+    # browser.stop()
+    # exit(0)
     searche_results = elements
 
     results = []
@@ -39,8 +44,8 @@ async def scrape(q):
         site_name = soap.find(class_="VuuXrf")
         search['result_by_site'] = site_name.text.strip() if site_name else None
 
-        overview = soap.find(class_="VwiC3b yXK7lf lVm3ye r025kc hJNv6b Hdw6tb")
-        search['result_overview'] = overview.text.strip() if overview else None
+        overview = soap.find(class_="kb0PBd A9Y9g")
+        search['result_overview'] = overview.get_text() if overview else None
 
         img = soap.find('img')
         search['site_logo'] = img.get('src') if img else None
@@ -69,4 +74,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=4000)
