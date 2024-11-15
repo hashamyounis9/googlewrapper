@@ -31,8 +31,8 @@ pip install flask nodriver beautifulsoup4
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/yourusername/google-search-scraper-api.git
-    cd google-search-scraper-api
+    git clone https://github.com/hashamyounis9/googlewrapper 
+    cd googlewrapper 
     ```
 
 2. **Run the Flask application:**
