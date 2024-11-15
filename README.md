@@ -17,12 +17,11 @@ Before running the API, ensure that you have the following installed:
 - `nodriver` package
 - `Flask` package
 - `BeautifulSoup` package
-- `asyncio` package
 
 You can install the required packages using `pip`:
 
 ```bash
-pip install flask nodriver beautifulsoup4 asyncio
+pip install flask nodriver beautifulsoup4
 ```
 
 ## Getting Started
